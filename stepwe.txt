@@ -1,0 +1,9 @@
+entity=db ...dto= postman ....ent-dto-rep-ser-cont
+
+
+entity = dto not bounded to write as same as db or any just in column write in small
+but postman same as set getter of dto and entity class
+
+table name is case insenstitive but write in capital 
+
+db name app.properties should be same as db name like in small.
