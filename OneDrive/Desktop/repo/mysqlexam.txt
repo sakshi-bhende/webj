@@ -1,0 +1,604 @@
+----------------------------PART 1---------------------------------------------------------------
+
+ques1  Retrieve employee details where the hire year is after 1982.
+
+select e.ename emp_name,e.sal salary,e.hiredate joining_date ,
+d.deptno department_no , d.dname department_name from emp e join dept d 
+on e.deptno=d.deptno and year(e.hiredate)>1982;
+
+mysql> select e.ename emp_name,e.sal salary,e.hiredate joining_date ,
+    -> d.deptno department_no , d.dname department_name from emp e join dept d
+    -> on e.deptno=d.deptno and year(e.hiredate)>1982;
++----------+---------+--------------+---------------+-----------------+
+| emp_name | salary  | joining_date | department_no | department_name |
++----------+---------+--------------+---------------+-----------------+
+| ADAMS    | 1100.00 | 1983-07-17   |            20 | RESEARCH        |
+| WARD     | 1250.00 | 1984-02-22   |            30 | SALES           |
++----------+---------+--------------+---------------+-----------------+
+2 rows in set (0.00 sec)
+
+-------------------------------------------------------------------------
+
+QUES2 Fetch employees working as CLERK or ANALYST along with their department details
+
+select e.empno ,e.ename emp_name,d.dname department_name,e.sal salary,
+d.deptno department_no from emp e join dept d 
+on e.deptno=d.deptno and e.job in ("CLERK","ANALYST");
+
+mysql> select e.empno ,e.ename emp_name,d.dname department_name,e.sal salary,
+    -> d.deptno department_no from emp e join dept d
+    -> on e.deptno=d.deptno and e.job in ("CLERK","ANALYST");
++-------+----------+-----------------+---------+---------------+
+| empno | emp_name | department_name | salary  | department_no |
++-------+----------+-----------------+---------+---------------+
+|  7934 | MILLER   | ACCOUNTING      | 1300.00 |            10 |
+|  7369 | SMITH    | RESEARCH        |  800.00 |            20 |
+|  7788 | SCOTT    | RESEARCH        | 3000.00 |            20 |
+|  7876 | ADAMS    | RESEARCH        | 1100.00 |            20 |
+|  7902 | FORD     | RESEARCH        | 3000.00 |            20 |
+|  7900 | JAMES    | SALES           |  950.00 |            30 |
++-------+----------+-----------------+---------+---------------+
+6 rows in set (0.00 sec)
+
+mysql>
+------------------------------------------------------------------------------------------------
+
+Ques 3 Find employees whose name starts with the third letter 'I'.
+
+select empno ,ename emp_name,sal salary
+ from emp e where ename like "__i%";
+mysql> select empno ,ename emp_name,sal salary
+    ->  from emp e where ename like "__i%";
++-------+----------+--------+
+| empno | emp_name | salary |
++-------+----------+--------+
+|  7369 | SMITH    | 800.00 |
++-------+----------+--------+
+1 row in set (0.00 sec)
+---------------------------------------------------------------------------------------------
+
+QUES 4 Retrieve all employees hired after 1981.
+
+select * from emp where year(hiredate)>1981;
+mysql> select * from emp where year(hiredate)>1981;
++-------+--------+----------+------+------------+---------+---------+--------+
+| EMPNO | ENAME  | JOB      | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
++-------+--------+----------+------+------------+---------+---------+--------+
+|  7521 | WARD   | SALESMAN | 7698 | 1984-02-22 | 1250.00 |  500.00 |     30 |
+|  7654 | MARTIN | SALESMAN | 7698 | 1982-09-28 | 1250.00 | 1400.00 |     30 |
+|  7876 | ADAMS  | CLERK    | 7788 | 1983-07-17 | 1100.00 |    NULL |     20 |
+|  7934 | MILLER | CLERK    | 7782 | 1982-01-23 | 1300.00 |    NULL |     10 |
++-------+--------+----------+------+------------+---------+---------+--------+
+4 rows in set (0.00 sec)
+
+mysql>
+---------------------------------------------------------------------------------------------
+
+QUES 5 Retrieve employees with salary between 1300 and 5000.
+
+select * from emp where sal > 1300 and sal < 5000;
+mysql> select * from emp where sal > 1300 and sal < 5000;
++-------+--------+----------+------+------------+---------+--------+--------+
+| EMPNO | ENAME  | JOB      | MGR  | HIREDATE   | SAL     | COMM   | DEPTNO |
++-------+--------+----------+------+------------+---------+--------+--------+
+|  7844 | TURNER | SALESMAN | 7698 | 1981-09-08 | 1500.00 |   0.00 |     30 |
+|  7499 | ALLEN  | SALESMAN | 7698 | 1981-02-20 | 1600.00 | 300.00 |     30 |
+|  7782 | CLARK  | MANAGER  | 7839 | 1981-06-09 | 2450.00 |   NULL |     10 |
+|  7698 | BLAKE  | MANAGER  | 7839 | 1981-05-01 | 2850.00 |   NULL |     30 |
+|  7566 | JONES  | MANAGER  | 7839 | 1981-04-02 | 2975.00 |   NULL |     20 |
+|  7788 | SCOTT  | ANALYST  | 7566 | 1887-07-13 | 3000.00 |   NULL |     20 |
+|  7902 | FORD   | ANALYST  | 7566 | 1981-12-03 | 3000.00 |   NULL |     20 |
++-------+--------+----------+------+------------+---------+--------+--------+
+7 rows in set (0.00 sec)
+------------------------------------------------------------------------------------------------------
+---------------------------------------PART 2---------------------------------------------------------------
+ques 1 Retrieve employees and their managers where the manager's name starts with the second letter 'A'.
+
+select e.ename Employee ,m.ename Manager from emp e join emp m on e.mgr=m.empno and m.ename like '__a%';
+
+mysql> select e.ename Employee ,m.ename Manager from emp e join emp m on e.mgr=m.empno and m.ename like '__a%';
++----------+---------+
+| Employee | Manager |
++----------+---------+
+| ALLEN    | BLAKE   |
+| WARD     | BLAKE   |
+| MARTIN   | BLAKE   |
+| TURNER   | BLAKE   |
+| JAMES    | BLAKE   |
+| MILLER   | CLARK   |
++----------+---------+
+6 rows in set (0.00 sec)
+
+---------------------------------------------------------------------------------------
+ques 2 Retrieve department details and employees, sorted by department number and        employee name.
+	select d.dname department_name,d.deptno department_no,e.ename emp_name 
+	from dept d join emp e on e.deptno = d.deptno 
+	order by d.deptno,e.ename;
+
+mysql> select d.dname department_name,d.deptno department_no,e.ename emp_name
+    -> from dept d join emp e on e.deptno = d.deptno
+    -> order by d.deptno,e.ename;
++-----------------+---------------+----------+
+| department_name | department_no | emp_name |
++-----------------+---------------+----------+
+| ACCOUNTING      |            10 | CLARK    |
+| ACCOUNTING      |            10 | KING     |
+| ACCOUNTING      |            10 | MILLER   |
+| RESEARCH        |            20 | ADAMS    |
+| RESEARCH        |            20 | FORD     |
+| RESEARCH        |            20 | JONES    |
+| RESEARCH        |            20 | SCOTT    |
+| RESEARCH        |            20 | SMITH    |
+| SALES           |            30 | ALLEN    |
+| SALES           |            30 | BLAKE    |
+| SALES           |            30 | JAMES    |
+| SALES           |            30 | MARTIN   |
+| SALES           |            30 | TURNER   |
+| SALES           |            30 | WARD     |
++-----------------+---------------+----------+
+14 rows in set (0.00 sec)
+--------------------------------------------------------------------
+ques 3 Count the number of employees in each department.
+
+select d.dname department_name,count(*) number_of_employees
+	from dept d join emp e on e.deptno = d.deptno group by 1;
+	
++-----------------+---------------------+
+| department_name | number_of_employees |
++-----------------+---------------------+
+| ACCOUNTING      |                   3 |
+| RESEARCH        |                   5 |
+| SALES           |                   6 |
++-----------------+---------------------+
+3 rows in set (0.00 sec)
+
+mysql>
+	
+---------------------------------------------------------------------------
+que 4  Calculate the annual salary of each employee and sort in descending order.
+
+mysql> select ename,(sal*12) annual_salary  from emp order by annual_salary desc;
++--------+---------------+
+| ename  | annual_salary |
++--------+---------------+
+| KING   |      60000.00 |
+| SCOTT  |      36000.00 |
+| FORD   |      36000.00 |
+| JONES  |      35700.00 |
+| BLAKE  |      34200.00 |
+| CLARK  |      29400.00 |
+| ALLEN  |      19200.00 |
+| TURNER |      18000.00 |
+| MILLER |      15600.00 |
+| WARD   |      15000.00 |
+| MARTIN |      15000.00 |
+| ADAMS  |      13200.00 |
+| JAMES  |      11400.00 |
+| SMITH  |       9600.00 |
++--------+---------------+
+14 rows in set (0.00 sec)
+
+mysql>
+--------------------------------------------------------------------------------------
+========================================ques 3 function
+===================================
+
+
+
+set global log_bin_trust_function_creators=1;
+delimiter $$
+drop function if exists total_sal;
+create function total_sal(mdeptno int)
+returns int
+begin
+	declare result int;
+	select sum(sal) into result from emp where deptno=mdeptno;
+	return result;
+end $$
+delimiter ;
+
+**************************************************************
+mysql> set global log_bin_trust_function_creators=1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delimiter $$
+mysql> drop function if exists total_sal;
+    -> create function total_sal(mdeptno int)
+    -> returns int
+    -> begin
+    -> declare result int;
+    -> select sum(sal) into result from emp where deptno=mdeptno;
+    -> return result;
+    -> end $$
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+/////////////////salary can come more in screenshots as they were taken later when update salary was done for trigger//////
+mysql> delimiter ;
+mysql> select total_sal(10);
++---------------+
+| total_sal(10) |
++---------------+
+|          8750 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select total_sal(20);
++---------------+
+| total_sal(20) |
++---------------+
+|         10875 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select total_sal(30);
++---------------+
+| total_sal(30) |
++---------------+
+|          9400 |
++---------------+
+1 row in set (0.00 sec)
+
+***********************************************************************************
+
+========================================QUES 4 TRIGGER===================================
+Create a trigger to log salary changes in a separate table.
+
+CREATE TABLE salary_changes_log (
+    log_id INT AUTO_INCREMENT PRIMARY KEY,
+    emp_id INT,
+    old_salary DECIMAL(10, 2),
+    new_salary DECIMAL(10, 2),
+    salary_difference DECIMAL(10, 2),
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+mysql> desc salary_changes_log;
++-------------------+---------------+------+-----+-------------------+-------------------+
+| Field             | Type          | Null | Key | Default           | Extra             |
++-------------------+---------------+------+-----+-------------------+-------------------+
+| log_id            | int           | NO   | PRI | NULL              | auto_increment    |
+| emp_id            | int           | YES  |     | NULL              |                   |
+| old_salary        | decimal(10,2) | YES  |     | NULL              |                   |
+| new_salary        | decimal(10,2) | YES  |     | NULL              |                   |
+| salary_difference | decimal(10,2) | YES  |     | NULL              |                   |
+| updated_at        | timestamp     | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++-------------------+---------------+------+-----+-------------------+-------------------+
+6 rows in set (0.01 sec)
+
+Delimiter $$
+CREATE TRIGGER salary_update_trigger
+AFTER UPDATE ON emp
+FOR EACH ROW
+BEGIN
+    
+    IF OLD.sal != NEW.sal THEN
+        -- Output the difference between old and new salary values
+        INSERT INTO salary_changes_log (emp_id, old_salary, new_salary, salary_difference, updated_at)
+        VALUES (NEW.empno, OLD.sal, NEW.sal, NEW.sal - OLD.sal, NOW());
+    END IF;
+END $$
+
+Delimiter ;
+ update emp set sal =90000 where empno=7839;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from salary_changes_log;
++--------+--------+------------+------------+-------------------+---------------------+
+| log_id | emp_id | old_salary | new_salary | salary_difference | updated_at          |
++--------+--------+------------+------------+-------------------+---------------------+
+|      1 |   7839 |    5000.00 |   90000.00 |          85000.00 | 2024-11-21 09:33:46 |
++--------+--------+------------+------------+-------------------+---------------------+
+--------------------------------------------------------------------------------
+
+**********************************************************************************************************
+											MONGO DB
+											
+
+db.my_col.insertMany([
+	{ 
+		title :"MongoDb Overview",
+		description : "MongoDB is no SQL database",
+		by : "tutorials Point",
+		url :"http://www.tutorialspoint.com",
+		tags:["mongodb","database","NoSQL"],
+		likes:100
+	},
+	{
+		title :"NoSQL database",
+		description : "NoSql database doesn't have tables",
+		by : "tutorials Point",
+		url :"http://www.tutorialspoint.com",
+		tags:["mongodb","database","NoSQL"],
+		likes:20,
+		comments:[
+			{
+				user:"user1",
+				message:"My first comment",
+				dateCreated : new Date(2013,11,10,2,35),
+				like : 0
+			}
+		]
+		
+		
+	}]);
+
+
+
+sample> db.my_col.find();
+[
+  {cknowledged: true,
+    _id: ObjectId('673eb55ce08c39bfe40d8192'),
+    title: 'MongoDb Overview',c39bfe40d8192'),
+    description: 'MongoDB is no SQL database',
+    by: 'tutorials Point',
+    url: 'http://www.tutorialspoint.com',
+    tags: [ 'mongodb', 'database', 'NoSQL' ],
+    likes: 100
+  },
+  {
+    _id: ObjectId('673eb55ce08c39bfe40d8193'),
+    title: 'NoSQL database',
+    description: "NoSql database doesn't have tables",
+    by: 'tutorials Point',
+    url: 'http://www.tutorialspoint.com',
+    tags: [ 'mongodb', 'database', 'NoSQL' ],
+    likes: 20,
+    comments: [
+      {
+        user: 'user1',
+        message: 'My first comment',
+        dateCreated: ISODate('2013-12-09T21:05:00.000Z'),
+        like: 0
+      }
+    ]
+  }
+]
+sample>
+
+
+
+
+
+======================ques1======================
+
+Retrieve all documents where the number of likes is greater than 10.
+db.my_col.find({likes:{$gt:10}});
+
+sample> db.my_col.find({likes:{$gt:10}});
+[
+  {
+    _id: ObjectId('673eb55ce08c39bfe40d8192'),
+    title: 'MongoDb Overview',
+    description: 'MongoDB is no SQL database',
+    by: 'tutorials Point',
+    url: 'http://www.tutorialspoint.com',
+    tags: [ 'mongodb', 'database', 'NoSQL' ],
+    likes: 100
+  },
+  {
+    _id: ObjectId('673eb55ce08c39bfe40d8193'),
+    title: 'NoSQL database',
+    description: "NoSql database doesn't have tables",
+    by: 'tutorials Point',
+    url: 'http://www.tutorialspoint.com',
+    tags: [ 'mongodb', 'database', 'NoSQL' ],
+    likes: 20,
+    comments: [
+      {
+        user: 'user1',
+        message: 'My first comment',
+        dateCreated: ISODate('2013-12-09T21:05:00.000Z'),
+        like: 0
+      }
+    ]
+  }
+]
+sample>
+==================================================ques2=======================================
+ Retrieve documents where a comment is made by "user1".
+db.my_col.find([comments:{user:"user1"}])
+db.my_col.find({ "comments.user": "user1" });-------
+sample> db.my_col.find({ "comments.user": "user1" });
+[
+  {
+    _id: ObjectId('673eb55ce08c39bfe40d8193'),
+    title: 'NoSQL database',
+    description: "NoSql database doesn't have tables",
+    by: 'tutorials Point',
+    url: 'http://www.tutorialspoint.com',
+    tags: [ 'mongodb', 'database', 'NoSQL' ],
+    likes: 20,
+    comments: [
+      {
+        user: 'user1',
+        message: 'My first comment',
+        dateCreated: ISODate('2013-12-09T21:05:00.000Z'),
+        like: 0
+      }
+    ]
+  }
+]
+sample>
+----------------------------------------------------------------
+db.my_col.find({ tags: "NoSQL" });
+
+[
+  {
+    "_id": ObjectId("673eb55ce08c39bfe40d8192"),
+    "title": "MongoDb Overview",
+    "description": "MongoDB is no SQL database",
+    "by": "tutorials Point",
+    "url": "http://www.tutorialspoint.com",
+    "tags": ["mongodb", "database", "NoSQL"],
+    "likes": 100
+  },
+  {
+    "_id": ObjectId("673eb55ce08c39bfe40d8193"),
+    "title": "NoSQL database",
+    "description": "NoSql database doesn't have tables",
+    "by": "tutorials Point",
+    "url": "http://www.tutorialspoint.com",
+    "tags": ["mongodb", "database", "NoSQL"],
+    "likes": 20,
+    "comments": [
+      {
+        "user": "user1",
+        "message": "My first comment",
+        "dateCreated": ISODate("2013-12-09T21:05:00.000Z"),
+        "like": 0
+      }
+    ]
+  }
+]
+-------------------
+Count the total number of documents in the collection.
+db.my_col.countDocuments();
+-------------
+
+Find documents with a specific nested field value in an array.
+db.my_col.find({ "comments.user": "user1" });
+
+[
+  {
+    "_id": ObjectId("673eb55ce08c39bfe40d8193"),
+    "title": "NoSQL database",
+    "description": "NoSql database doesn't have tables",
+    "by": "tutorials Point",
+    "url": "http://www.tutorialspoint.com",
+    "tags": ["mongodb", "database", "NoSQL"],
+    "likes": 20,
+    "comments": [
+      {
+        "user": "user1",
+        "message": "My first comment",
+        "dateCreated": ISODate("2013-12-09T21:05:00.000Z"),
+        "like": 0
+      }
+    ]
+  }
+]
+
+-------------------
+Retrieve documents sorted by the likes field in descending order.
+
+db.my_col.find().sort({ likes: -1 });
+
+[
+  {
+    "_id": ObjectId("673eb55ce08c39bfe40d8192"),
+    "title": "MongoDb Overview",
+    "description": "MongoDB is no SQL database",
+    "by": "tutorials Point",
+    "url": "http://www.tutorialspoint.com",
+    "tags": ["mongodb", "database", "NoSQL"],
+    "likes": 110
+  },
+  {
+    "_id": ObjectId("673eb55ce08c39bfe40d8193"),
+    "title": "NoSQL database",
+    "description": "NoSql database doesn't have tables",
+    "by": "tutorials Point",
+    "url": "http://www.tutorialspoint.com",
+    "tags": ["mongodb", "database", "NoSQL"],
+    "likes": 20,
+    "comments": [
+      {
+        "user": "user1",
+        "message": "My first comment",
+        "dateCreated": ISODate("2013-12-09T21:05:00.000Z"),
+        "like": 0
+      }
+    ]
+  }
+]
+-----------------------------
+Increment the likes field for a specific document.
+db.my_col.updateOne(
+  { title: "MongoDb Overview" },
+  { $inc: { likes: 10 } }
+);
+-------------------
+ Add a new field to all documents in the collection.
+
+db.my_col.updateMany(
+  {},
+  { $set: { status: "active" } }
+);
+
+=-------------------------
+Delete documents where likes are less than 50.
+db.my_col.deleteMany({ likes: { $lt: 50 } });
+--------------------
+Update operation to modify likes.
+db.my_col.updateOne(
+  { title: "MongoDb Overview" },
+  { $set: { likes: 150 } }
+);
+-------------
+Find all documents in the collection.
+Query:
+db.my_col.find();
+
+[
+  {
+    "_id": ObjectId("673eb55ce08c39bfe40d8192"),
+    "title": "MongoDb Overview",
+    "description": "MongoDB is no SQL database",
+    "by": "tutorials Point",
+    "url": "http://www.tutorialspoint.com",
+    "tags": ["mongodb", "database", "NoSQL"],
+    "likes": 100
+  },
+  {
+    "_id": ObjectId("673eb55ce08c39bfe40d8193"),
+    "title": "NoSQL database",
+    "description": "NoSql database doesn't have tables",
+    "by": "tutorials Point",
+    "url": "http://www.tutorialspoint.com",
+    "tags": ["mongodb", "database", "NoSQL"],
+    "likes": 20,
+    "comments": [
+      {
+        "user": "user1",
+        "message": "My first comment",
+        "dateCreated": ISODate("2013-12-09T21:05:00.000Z"),
+        "like": 0
+      }
+    ]
+  }
+]
+-------------------
+
+Add multiple documents to the collection.
+db.my_col.insertMany([
+  {
+    title: "MongoDb Overview",
+    description: "MongoDB is no SQL database",
+    by: "tutorials Point",
+    url: "http://www.tutorialspoint.com",
+    tags: ["mongodb", "database", "NoSQL"],
+    likes: 100
+  },
+  {
+    title: "NoSQL database",
+    description: "NoSql database doesn't have tables",
+    by: "tutorials Point",
+    url: "http://www.tutorialspoint.com",
+    tags: ["mongodb", "database", "NoSQL"],
+    likes: 20,
+    comments: [
+      {
+        user: "user1",
+        message: "My first comment",
+        dateCreated: new Date(2013, 11, 10, 2, 35),
+        like: 0
+      }
+    ]
+  }
+]);
+
+
+
+
+
